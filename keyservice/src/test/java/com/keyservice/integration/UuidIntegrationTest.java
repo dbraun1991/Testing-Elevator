@@ -33,7 +33,7 @@ class UuidIntegrationTest {
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine")
             .withDatabaseName("keyservice")
             .withUsername("keyservice")
-            .withPassword("keyservice");
+            .withPassword("VerylongKeyserviceDatabasepassword");
 
     @DynamicPropertySource
     static void configureDataSource(DynamicPropertyRegistry registry) {
