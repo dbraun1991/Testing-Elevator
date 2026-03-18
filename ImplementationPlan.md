@@ -95,13 +95,13 @@ testing-elevator/
 │           └── resources/
 │               └── application-test.properties
 │
-├── p2-docker/                           # Block 3 — Container-Demo
+├── docker/                              # Block 3 — Container-Demo
 │   ├── docker-compose.yml               # Service + PostgreSQL
 │   └── http/
 │       ├── keyservice-api.http
 │       └── http-client.env.json
 │
-└── p4-loadtest/                         # Block 5 — Lasttest
+└── loadtest/                            # Block 5 — Lasttest
     ├── docker-stack.yml                 # Service + Prometheus + Grafana (kein PostgreSQL)
     ├── k6/
     │   └── script.js
