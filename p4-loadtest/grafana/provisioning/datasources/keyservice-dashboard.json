@@ -1,0 +1,102 @@
+{
+    "title": "Keyservice — Load Test",
+    "uid": "keyservice-loadtest",
+    "refresh": "5s",
+    "time": { "from": "now-15m", "to": "now" },
+    "timezone": "browser",
+    "schemaVersion": 39,
+    "panels": [
+      {
+        "id": 1,
+        "title": "CPU Usage",
+        "description": "Prozessor-Auslastung des Keyservice. Steigt stark beim RSA-4096-Peak.",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "min": 0,
+            "max": 1,
+            "color": { "mode": "palette-classic" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "yellow", "value": 0.5 },
+                { "color": "red",    "value": 0.8 }
+              ]
+            }
+          }
+        },
+        "options": {
+          "tooltip": { "mode": "single" },
+          "legend": { "displayMode": "list", "placement": "bottom" }
+        },
+        "targets": [
+          {
+            "datasource": "Prometheus",
+            "expr": "process_cpu_usage{instance=\"keyservice\"}",
+            "legendFormat": "CPU"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Request Rate (req/s)",
+        "description": "Anzahl der HTTP-Requests pro Sekunde, aufgeschlüsselt nach URI.",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "reqps",
+            "min": 0,
+            "color": { "mode": "palette-classic" }
+          }
+        },
+        "options": {
+          "tooltip": { "mode": "multi" },
+          "legend": { "displayMode": "list", "placement": "bottom" }
+        },
+        "targets": [
+          {
+            "datasource": "Prometheus",
+            "expr": "rate(http_server_requests_seconds_count{instance=\"keyservice\"}[30s])",
+            "legendFormat": "{{uri}}"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Max Response Time (s)",
+        "description": "Maximale Antwortzeit pro Endpunkt. RSA-4096 treibt diesen Wert deutlich hoch.",
+        "type": "timeseries",
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "min": 0,
+            "color": { "mode": "palette-classic" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green",  "value": null },
+                { "color": "yellow", "value": 1 },
+                { "color": "red",    "value": 5 }
+              ]
+            }
+          }
+        },
+        "options": {
+          "tooltip": { "mode": "multi" },
+          "legend": { "displayMode": "list", "placement": "bottom" }
+        },
+        "targets": [
+          {
+            "datasource": "Prometheus",
+            "expr": "http_server_requests_seconds_max{instance=\"keyservice\"}",
+            "legendFormat": "{{uri}}"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,52 @@
+services:
+
+keyservice:
+  image: keyservice:latest
+  ports:
+    - "8081:8081"
+  environment:
+    JAVA_OPTS: "-Xmx512m"
+    # Kein PostgreSQL — /uuid gibt 500 zurück (bewusst)
+    SPRING_AUTOCONFIGURE_EXCLUDE: >
+      org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,
+      org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  networks:
+    - monitor-net
+
+prometheus:
+  image: prom/prometheus:v3.2.1
+  ports:
+    - "9090:9090"
+  volumes:
+    - ./prometheus/:/etc/prometheus/
+    - prometheus_data:/prometheus
+  command:
+    - '--config.file=/etc/prometheus/prometheus.yml'
+    - '--storage.tsdb.path=/prometheus'
+    - '--web.enable-lifecycle'
+  depends_on:
+    - keyservice
+  networks:
+    - monitor-net
+
+grafana:
+  image: grafana/grafana:11.5.0
+  ports:
+    - "3000:3000"
+  volumes:
+    - grafana_data:/var/lib/grafana
+    - ./grafana/provisioning/:/etc/grafana/provisioning/
+  env_file:
+    - ./grafana/config.monitoring
+  depends_on:
+    - prometheus
+  networks:
+    - monitor-net
+
+volumes:
+prometheus_data: {}
+grafana_data: {}
+
+networks:
+monitor-net:
+  
