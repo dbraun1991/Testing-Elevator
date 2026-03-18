@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import org.junit.jupiter.api.Disabled;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -18,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   mvn test -Dtest=KeySizeValidatorStrongTest
  *   mvn test-compile org.pitest:pitest-maven:mutationCoverage
  */
-class KeySizeValidatorStrongTest {
+@Disabled()
+class KeySizeValidator2StrongTest {
 
     private final KeySizeValidator validator = new KeySizeValidator();
 

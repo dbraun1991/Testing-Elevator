@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   mvn test -Dtest=KeySizeValidatorWeakTest
  *   mvn test-compile org.pitest:pitest-maven:mutationCoverage
  */
-class KeySizeValidatorWeakTest {
+class KeySizeValidator1WeakTest {
 
     private final KeySizeValidator validator = new KeySizeValidator();
 
