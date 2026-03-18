@@ -1,0 +1,41 @@
+### Echo — gibt msg unverändert zurück
+GET {{server}}/echo?msg=hello-testing-elevator
+Accept: application/json
+
+###
+
+### Echo — Sonderzeichen
+GET {{server}}/echo?msg=CCC-Publikum
+Accept: application/json
+
+###
+
+### UUID — generiert UUIDv4, persistiert in PostgreSQL
+GET {{server}}/uuid
+Accept: application/json
+
+###
+
+### Key — RSA 512 Bit (schnell)
+GET {{server}}/key?size=512
+Accept: application/json
+
+###
+
+### Key — RSA 2048 Bit (merklich langsamer)
+GET {{server}}/key?size=2048
+Accept: application/json
+
+###
+
+### Key — RSA 4096 Bit (deutlich langsamer)
+GET {{server}}/key?size=4096
+Accept: application/json
+
+###
+
+### Key — ungültiger Wert → HTTP 400
+GET {{server}}/key?size=9999
+Accept: application/json
+
+###
