@@ -1,0 +1,63 @@
+# -------------------------
+# Java / Maven
+# -------------------------
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# -------------------------
+# Spring Boot
+# -------------------------
+application-local.properties
+application-local.yml
+
+# -------------------------
+# IDE — IntelliJ
+# -------------------------
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# IDE — VS Code
+.vscode/
+
+# IDE — Eclipse
+.classpath
+.project
+.settings/
+
+# -------------------------
+# macOS
+# -------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# -------------------------
+# Docker
+# -------------------------
+# Lokale Override-Files
+docker-compose.override.yml
+
+# -------------------------
+# Testcontainers
+# -------------------------
+.testcontainers.properties
+
+# -------------------------
+# JaCoCo / Pitest
+# -------------------------
+# Reports werden lokal generiert, nicht eingecheckt
+keyservice/target/site/
+keyservice/target/pit-reports/
+keyservice/target/jacoco.exec
+
+# -------------------------
+# k6
+# -------------------------
+p4-loadtest/k6/results/
