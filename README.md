@@ -1,5 +1,4 @@
 # Testing-Elevator
-Testing auf verschiedenen Abstraktions- bzw. Testebenen.
 
 Ein Spring Boot Service als roter Faden durch drei Teststufen —
 von der Unit-Test-Validierung bis zum Lasttest mit Grafana.
@@ -72,8 +71,8 @@ k6 run script.js
 
 | Komponente     | Version           |
 |----------------|-------------------|
-| Java           | Oracle JDK 25.0.2 |
-| Spring Boot    | 4.0.3             |
+| Java           | Corretto 21.0.1   |
+| Spring Boot    | 3.4.5             |
 | PostgreSQL     | 17 (alpine)       |
 | Testcontainers | 1.20.x            |
 | Pitest         | 1.17.x            |

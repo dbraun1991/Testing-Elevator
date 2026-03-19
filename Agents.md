@@ -24,15 +24,15 @@ P4: Grafana zeigt den Einbruch live. RSA-4096 unter Last = DDoS-Effekt.
 
 ## Der Service — `keyservice / com.keyservice`
 
-**Stack:** Spring Boot 4.0.3, Java 25 (Oracle JDK 25.0.2), Maven
+**Stack:** Spring Boot 3.4.5, Java 21 (Corretto 21.0.1), Maven
 
 **Drei Endpunkte:**
 
-| Endpunkt          | Verhalten                                                        | Besonderheit                        |
-|-------------------|------------------------------------------------------------------|-------------------------------------|
-| `GET /echo?msg=`  | Gibt `msg` zurück                                                | Minimale Last, immer schnell        |
-| `GET /uuid`       | Generiert UUID, persistiert in PostgreSQL, gibt UUID zurück      | Ohne DB → HTTP 500 (bewusst)        |
-| `GET /key?size=`  | Validiert size, generiert RSA-Key, gibt shortSha + durationMs   | Hohe Last bei size=4096             |
+| Endpunkt         | Verhalten                                                     | Besonderheit                 |
+|------------------|---------------------------------------------------------------|------------------------------|
+| `GET /echo?msg=` | Gibt `msg` zurück                                             | Minimale Last, immer schnell |
+| `GET /uuid`      | Generiert UUID, persistiert in PostgreSQL, gibt UUID zurück   | Ohne DB → HTTP 500 (bewusst) |
+| `GET /key?size=` | Validiert size, generiert RSA-Key, gibt shortSha + durationMs | Hohe Last bei size=4096      |
 
 **Validierungslogik (`KeySizeValidator`):**
 - Erlaubte Werte: `512, 1024, 2048, 4096` — als `Set<Integer>`
@@ -173,11 +173,11 @@ k6 run script.js
 
 ## k6-Szenario (Zeitplan)
 
-| Zeitfenster | Szenario  | Endpunkte                          | Erwarteter Effekt in Grafana         |
-|-------------|-----------|-------------------------------------|--------------------------------------|
-| 0s – 40s    | warmup    | `/echo` + `/uuid`                   | CPU flach, Latenz niedrig            |
-| 30s – 80s   | medium    | + `/key?size=512`                   | Leichter CPU-Anstieg                 |
-| 60s – 150s  | peak      | + `/key?size=4096`                  | CPU-Einbruch, Latenz explodiert      |
+| Zeitfenster | Szenario | Endpunkte          | Erwarteter Effekt in Grafana    |
+|-------------|----------|--------------------|---------------------------------|
+| 0s – 40s    | warmup   | `/echo` + `/uuid`  | CPU flach, Latenz niedrig       |
+| 30s – 80s   | medium   | + `/key?size=512`  | Leichter CPU-Anstieg            |
+| 60s – 150s  | peak     | + `/key?size=4096` | CPU-Einbruch, Latenz explodiert |
 
 Threshold `p(95)<2000ms` reißt im Peak — das ist beabsichtigt.
 
@@ -185,15 +185,15 @@ Threshold `p(95)<2000ms` reißt im Peak — das ist beabsichtigt.
 
 ## Entscheidungen mit Begründung
 
-| Entscheidung | Begründung |
-|---|---|
-| `KeySizeValidator` als eigene Klasse | Pitest braucht isolierten Scope — im Controller würde das Rauschen zu groß |
-| `/uuid` ohne DB → 500 (bewusst) | Ehrlich für CCC-Publikum; macht Containerization-Konzept greifbar |
-| Zwei Testklassen (Weak/Strong) | Dramaturgie: Pitest zeigt Lücken live, Fix auf zweitem Rechner sichtbar |
-| Kein PostgreSQL im Lasttest-Stack | Bottleneck soll RSA sein, nicht DB; 500 bei /uuid wird in k6 toleriert |
-| Grafana provisioned JSON | Kein manuelles Klicken während der Demo |
-| `shortSha` statt vollem Public Key | Lesbar in Konsole und Response; durationMs ist das eigentliche Story-Element |
-| k6 Scenarios mit `startTime` | Sauberer als manuelle elapsed-time-Berechnung; Szenarien klar trennbar |
+| Entscheidung                         | Begründung                                                                   |
+|--------------------------------------|------------------------------------------------------------------------------|
+| `KeySizeValidator` als eigene Klasse | Pitest braucht isolierten Scope — im Controller würde das Rauschen zu groß   |
+| `/uuid` ohne DB → 500 (bewusst)      | Ehrlich für CCC-Publikum; macht Containerization-Konzept greifbar            |
+| Zwei Testklassen (Weak/Strong)       | Dramaturgie: Pitest zeigt Lücken live, Fix auf zweitem Rechner sichtbar      |
+| Kein PostgreSQL im Lasttest-Stack    | Bottleneck soll RSA sein, nicht DB; 500 bei /uuid wird in k6 toleriert       |
+| Grafana provisioned JSON             | Kein manuelles Klicken während der Demo                                      |
+| `shortSha` statt vollem Public Key   | Lesbar in Konsole und Response; durationMs ist das eigentliche Story-Element |
+| k6 Scenarios mit `startTime`         | Sauberer als manuelle elapsed-time-Berechnung; Szenarien klar trennbar       |
 
 ---
 
@@ -207,3 +207,4 @@ Threshold `p(95)<2000ms` reißt im Peak — das ist beabsichtigt.
   Fallback: `application-loadtest.properties` mit leerem `spring.datasource.url` und Profil setzen.
 - **Dockerfile mvnw:** Setzt voraus, dass `mvnw` im Projekt liegt (Spring Initializr generiert dies).
   Alternativ: JAR lokal bauen, Dockerfile kopiert nur das fertige JAR.
+- 

@@ -63,9 +63,12 @@ Grafana zeigt den Einbruch live.
 testing-elevator/
 │
 ├── plan.md
+├── README.md
+├── agents.md
+├── LICENSE
 │
-├── keyservice/                          # Block 1 — Spring Boot Service
-│   ├── Dockerfile
+├── keyservice/                              # Block 1 — Spring Boot Service
+│   ├── dockerfile
 │   ├── pom.xml
 │   └── src/
 │       ├── main/
@@ -88,21 +91,27 @@ testing-elevator/
 │       └── test/
 │           ├── java/com/keyservice/
 │           │   ├── validator/
-│           │   │   ├── KeySizeValidatorWeakTest.java   # P1 — schwache Tests
+│           │   │   ├── KeySizeValidatorWeakTest.java   # P1 — schwache Tests (Demo-Start)
 │           │   │   └── KeySizeValidatorStrongTest.java # P1 — starke Tests (Live-Fix)
 │           │   └── integration/
 │           │       └── UuidIntegrationTest.java        # P3 — Testcontainers
 │           └── resources/
 │               └── application-test.properties
 │
-├── docker/                              # Block 3 — Container-Demo
-│   ├── docker-compose.yml               # Service + PostgreSQL
+├── p1-unittest/                             # Reminder-Ordner
+│   └── Unittest-Readme.md
+│
+├── p2-docker-containerization/              # Block 3 — Container-Demo
+│   ├── docker-compose.yml                   # Service + PostgreSQL
 │   └── http/
 │       ├── keyservice-api.http
 │       └── http-client.env.json
 │
-└── loadtest/                            # Block 5 — Lasttest
-    ├── docker-stack.yml                 # Service + Prometheus + Grafana (kein PostgreSQL)
+├── p3-testcontainers/                       # Reminder-Ordner
+│   └── Testcontainers-Readme.md             # Testcontainers braucht keine docker-compose
+│
+└── p4-loadtest/                             # Block 5 — Lasttest
+    ├── docker-stack.yml                     # Service + Prometheus + Grafana (kein PostgreSQL)
     ├── k6/
     │   └── script.js
     ├── prometheus/
@@ -126,8 +135,8 @@ testing-elevator/
 ### Block 1 — Spring Boot Service
 
 **Schritt 1.1 — `pom.xml`**
-- Spring Boot Parent: `4.0.3`
-- Java: `25`
+- Spring Boot Parent: `3.4.5`
+- Java: `21`
 - Dependencies:
   - `spring-boot-starter-web`
   - `spring-boot-starter-data-jpa`
@@ -173,7 +182,7 @@ testing-elevator/
 - Prometheus-Endpoint: `management.endpoint.prometheus.enabled=true`
 
 **Schritt 1.8 — `Dockerfile`**
-- Base: `eclipse-temurin:25-jdk-alpine` (Build-Stage) + `eclipse-temurin:25-jre-alpine` (Runtime)
+- Base: `eclipse-temurin:21-jdk-alpine` (Build-Stage) + `eclipse-temurin:21-jre-alpine` (Runtime)
 - Multi-stage Build
 - Exponiert Port `8081`
 
@@ -289,8 +298,8 @@ testing-elevator/
 
 | Komponente     | Version           |
 |----------------|-------------------|
-| Java           | Oracle JDK 25.0.2 |
-| Spring Boot    | 4.0.3             |
+| Java           | Corretto 21.0.1   |
+| Spring Boot    | 3.4.5             |
 | PostgreSQL     | 17 (alpine)       |
 | Testcontainers | 1.20.x            |
 | JUnit 5        | via Spring Boot   |
