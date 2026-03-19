@@ -1,5 +1,5 @@
 ### Echo — gibt msg unverändert zurück
-GET {{server}}/echo?msg=hello-testing-elevator
+GET {{server}}/echo?msg=testing-elevator
 Accept: application/json
 
 ###

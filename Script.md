@@ -110,7 +110,13 @@ Report neu laden. Score ~95–100%.
 ### 2.2 — Stack starten
 
 ```bash
-cd p2-docker-containerization
+# Image bauen (muss lokal vorhanden sein — wird nicht aus Registry gepullt)
+cd keyservice
+mvn package -DskipTests
+docker build -t keyservice:latest .
+
+# Stack starten
+cd ../p2-docker-containerization
 docker compose up
 ```
 
@@ -136,7 +142,10 @@ Konsolen-Log zeigt `[UUID] generated=...` und `[UUID] persisted=...`.
 
 *"Ist die UUID wirklich in der Datenbank? Wir sehen es im Log — aber prüft das jemand?"*
 
-Stack laufen lassen oder stoppen.
+```bash
+# Stack stoppen
+docker compose down
+```
 
 ---
 

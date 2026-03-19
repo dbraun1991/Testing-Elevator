@@ -1,0 +1,144 @@
+{
+  "info": {
+    "name": "Keyservice API",
+    "description": "Testing-Elevator — alle drei Endpunkte inkl. Fehlerfall",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "server",
+      "value": "http://localhost:8081",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Echo",
+      "item": [
+        {
+          "name": "Echo — hello",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/echo?msg=hello-testing-elevator",
+              "host": ["{{server}}"],
+              "path": ["echo"],
+              "query": [
+                {
+                  "key": "msg",
+                  "value": "hello-testing-elevator"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Echo — Sonderzeichen",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/echo?msg=CCC-Publikum",
+              "host": ["{{server}}"],
+              "path": ["echo"],
+              "query": [
+                {
+                  "key": "msg",
+                  "value": "CCC-Publikum"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "UUID",
+      "item": [
+        {
+          "name": "UUID — generieren und persistieren",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/uuid",
+              "host": ["{{server}}"],
+              "path": ["uuid"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Key",
+      "item": [
+        {
+          "name": "Key — RSA 512 Bit (schnell)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/key?size=512",
+              "host": ["{{server}}"],
+              "path": ["key"],
+              "query": [
+                {
+                  "key": "size",
+                  "value": "512"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Key — RSA 2048 Bit (merklich langsamer)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/key?size=2048",
+              "host": ["{{server}}"],
+              "path": ["key"],
+              "query": [
+                {
+                  "key": "size",
+                  "value": "2048"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Key — RSA 4096 Bit (deutlich langsamer)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/key?size=4096",
+              "host": ["{{server}}"],
+              "path": ["key"],
+              "query": [
+                {
+                  "key": "size",
+                  "value": "4096"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Key — ungültiger Wert → HTTP 400",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/key?size=9999",
+              "host": ["{{server}}"],
+              "path": ["key"],
+              "query": [
+                {
+                  "key": "size",
+                  "value": "9999"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

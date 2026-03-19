@@ -25,7 +25,7 @@ public class KeyController {
 
     @GetMapping("/echo")
     public ResponseEntity<String> echo(@RequestParam String msg) {
-        return ResponseEntity.ok(echoService.echo(msg));
+        return ResponseEntity.ok(echoService.echo("Hello " + msg));
     }
 
     @GetMapping("/uuid")
