@@ -1,0 +1,59 @@
+         /\      Grafana   /‾‾/
+    /\  /  \     |\  __   /  /
+   /  \/    \    | |/ /  /   ‾‾\
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/
+
+
+     execution: local
+        script: script.js
+        output: -
+
+     scenarios: (100.00%) 3 scenarios, 30 max VUs, 3m0s max duration (incl. graceful stop):
+              * warmup: Up to 5 looping VUs for 40s over 3 stages (gracefulRampDown: 30s, exec: scenarioWarmup, gracefulStop: 30s)
+              * medium: Up to 10 looping VUs for 40s over 3 stages (gracefulRampDown: 30s, exec: scenarioMedium, startTime: 30s, gracefulStop: 30s)
+              * peak: Up to 20 looping VUs for 1m30s over 3 stages (gracefulRampDown: 30s, exec: scenarioPeak, startTime: 1m0s, gracefulStop: 30s)
+
+
+
+  █ THRESHOLDS
+
+    http_req_duration
+    ✗ 'p(95)<2000' p(95)=2.21s
+
+
+  █ TOTAL RESULTS
+
+    checks_total.......: 2917    19.227882/s
+    checks_succeeded...: 100.00% 2917 out of 2917
+    checks_failed......: 0.00%   0 out of 2917
+
+    ✓ echo 200
+    ✓ uuid responded
+    ✓ key 512 200
+    ✓ key 4096 200
+
+    HTTP
+    http_req_duration..............: avg=334.45ms min=585µs med=8.17ms max=8.62s p(90)=1.32s p(95)=2.21s
+      { expected_response:true }...: avg=334.45ms min=585µs med=8.17ms max=8.62s p(90)=1.32s p(95)=2.21s
+    http_req_failed................: 0.00%  0 out of 2917
+    http_reqs......................: 2917   19.227882/s
+
+    EXECUTION
+    iteration_duration.............: avg=1.95s    min=1s    med=1.55s  max=9.63s p(90)=3.62s p(95)=4.5s
+    iterations.....................: 1024   6.749863/s
+    vus............................: 1      min=1         max=20
+    vus_max........................: 30     min=30        max=30
+
+    NETWORK
+    data_received..................: 432 kB 2.8 kB/s
+    data_sent......................: 241 kB 1.6 kB/s
+
+
+
+
+running (2m31.7s), 00/30 VUs, 1024 complete and 0 interrupted iterations
+warmup ✓ [======================================] 0/5 VUs    40s
+medium ✓ [======================================] 00/10 VUs  40s
+peak   ✓ [======================================] 00/20 VUs  1m30s
+ERRO[0152] thresholds on metrics 'http_req_duration' have been crossed

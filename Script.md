@@ -205,33 +205,51 @@ Dashboard **"Keyservice — Load Test"** ist automatisch geladen.
 Drei Panels: CPU, Request Rate, Max Response Time.
 Alles flach. Noch.
 
-### 4.4 — k6 starten
+### 4.4 — Actuator zeigen
+
+Im Browser öffnen — rohe Prometheus-Metriken live zeigen:
+
+```
+http://localhost:8081/actuator/prometheus
+```
+
+cpu_usage
+
+Kurz durch die Ausgabe scrollen: so sieht Prometheus-Format aus — Labels, Counter, Histogramme.
+Das ist die Datenquelle hinter Grafana.
+
+### 4.5 — k6 starten
 
 ```bash
 cd k6
 k6 run script.js
 ```
 
-**Szenario Warmup (0–40s):**
-`/echo` + `/uuid` — CPU bleibt flach, Grafana zeigt kaum Aktivität.
+Jeder Endpunkt spiked einzeln — in Grafana sieht man vier getrennte Kurven:
 
-**Szenario Medium (30–80s):**
-`/key?size=512` kommt dazu — leichter Anstieg sichtbar.
+**0–40s `/echo`:** Request Rate steigt, CPU flach, Response Time minimal.
 
-**Szenario Peak (60–150s):**
-`/key?size=4096` unter 20 VUs — **Grafana zeigt den Einbruch.**
+**50–90s `/uuid`:** Gleicher Verlauf — DB-Zugriff macht keinen messbaren Unterschied.
+
+**100–140s `/key?size=512`:** Spike sichtbar, CPU leicht erhöht — kleine Keys kein Problem.
+
+**150–230s `/key?size=4096`:** **Grafana zeigt den Einbruch.**
 CPU steigt, Max Response Time explodiert.
-Im Service-Log: `[KEY] generating RSA-4096 ...` häuft sich.
-`/echo`-Requests kommen weiter schnell durch — Thread-Pool-Effekt sichtbar.
-
 k6-Terminal: Threshold `p(95)<2000ms` reißt. Rot.
 
-### 4.5 — Abfall
+### 4.6 — Abfall
 
 Last geht zurück. Grafana erholt sich. CPU sinkt.
 
 **Erkenntnis:** Kein Unittest, kein Integrationstest hätte das gezeigt.
 Nur Last deckt auf, wie sich ein System unter Druck verhält.
+
+### 4.7 — Cleanup
+
+```bash
+cd p4-loadtest
+docker compose -f docker-stack.yml down
+```
 
 ---
 
