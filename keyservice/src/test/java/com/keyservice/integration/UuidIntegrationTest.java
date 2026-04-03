@@ -56,16 +56,13 @@ class UuidIntegrationTest {
 
     @Test
     void uuid_isPersisted_inDatabase() {
-        log.info("");
-        log.info("=======   Preparation   =======");
+        // Arrange
         log.info("[DB] Vor dem Test: Es befinden sich {} Einträge in der Datenbank", uuidRepository.count());
 
-        log.info("");
-        log.info("=======   Execution   =======");
+        // Act
         String responseUuid = restTemplate.getForObject("/uuid", String.class);
 
-        log.info("");
-        log.info("=======   Recheck   =======");
+        // Assert
         assertThat(responseUuid)
                 .as("Response sollte eine gültige UUID sein")
                 .isNotBlank()

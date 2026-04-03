@@ -13,25 +13,25 @@ class KeySizeValidator1WeakTest {
 
     @Test
     void size512IsValid() {
-        // Prämisse / Setup (Arrange)
+        // Arrange
         int input = 512;
 
-        // Execute (Act)
+        // Act
         boolean result = validator.isValid(input);
 
-        // Assertion / Comparison (Assert)
+        // Assert
         assertThat(result).isTrue();
     }
 
     @Test
     void size4096IsValid() {
-        // Prämisse / Setup (Arrange)
+        // Arrange
         int input = 4096;
 
-        // Execute (Act)
+        // Act
         boolean result = validator.isValid(input);
 
-        // Assertion / Comparison (Assert)
+        // Assert
         assertThat(result).isTrue();
     }
 }

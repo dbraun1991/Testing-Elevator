@@ -25,13 +25,13 @@ class KeySizeValidator2StrongTest {
             4096
     })
     void allowedSizesAreValid(int size) {
-        // Prämisse / Setup (Arrange)
+        // Arrange
         int input = size;
 
-        // Execute (Act)
+        // Act
         boolean result = validator.isValid(input);
 
-        // Assertion / Comparison (Assert)
+        // Assert
         assertThat(result).isTrue();
     }
 
@@ -54,13 +54,13 @@ class KeySizeValidator2StrongTest {
             Integer.MAX_VALUE
     })
     void invalidSizesAreRejected(int size) {
-        // Prämisse / Setup (Arrange)
+        // Arrange
         int input = size;
 
-        // Execute (Act)
+        // Act
         boolean result = validator.isValid(input);
 
-        // Assertion / Comparison (Assert)
+        // Assert
         assertThat(result).isFalse();
     }
 
@@ -68,37 +68,37 @@ class KeySizeValidator2StrongTest {
 
     @Test
     void zero_isInvalid() {
-        // Prämisse / Setup (Arrange)
+        // Arrange
         int input = 0;
 
-        // Execute (Act)
+        // Act
         boolean result = validator.isValid(input);
 
-        // Assertion / Comparison (Assert)
+        // Assert
         assertThat(result).isFalse();
     }
 
     @Test
     void negativeValue_isInvalid() {
-        // Prämisse / Setup (Arrange)
+        // Arrange
         int input = -1;
 
-        // Execute (Act)
+        // Act
         boolean result = validator.isValid(input);
 
-        // Assertion / Comparison (Assert)
+        // Assert
         assertThat(result).isFalse();
     }
 
     @Test
     void arbitraryLargeValue_isInvalid() {
-        // Prämisse / Setup (Arrange)
+        // Arrange
         int input = 99999;
 
-        // Execute (Act)
+        // Act
         boolean result = validator.isValid(input);
 
-        // Assertion / Comparison (Assert)
+        // Assert
         assertThat(result).isFalse();
     }
 }
