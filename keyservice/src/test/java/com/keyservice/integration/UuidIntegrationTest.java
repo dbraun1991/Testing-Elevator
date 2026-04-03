@@ -1,6 +1,7 @@
 package com.keyservice.integration;
 
 import com.keyservice.repository.UuidRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

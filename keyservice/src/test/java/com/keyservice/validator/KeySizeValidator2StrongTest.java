@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Code#3
  */
-@Disabled()
 class KeySizeValidator2StrongTest {
 
     private final KeySizeValidator validator = new KeySizeValidator();

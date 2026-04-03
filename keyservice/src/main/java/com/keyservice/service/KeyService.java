@@ -9,6 +9,14 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+/**
+ * Service backing the {@code GET /key} endpoint.
+ *
+ * <p>Validates the requested key size via {@link KeySizeValidator}, then generates
+ * an RSA key pair and measures wall-clock generation time. At {@code size=4096}
+ * the generation is intentionally expensive — under sustained load this causes
+ * the thread-pool saturation that is demonstrated in the P4 load-test stage.</p>
+ */
 @Service
 public class KeyService {
 
@@ -16,8 +24,25 @@ public class KeyService {
 
     private final KeySizeValidator validator = new KeySizeValidator();
 
+    /**
+     * Holds the result of a single RSA key-generation request.
+     *
+     * @param shortSha    the first 8 characters of the Base64-encoded public key,
+     *                    used as a human-readable fingerprint in responses and logs
+     * @param durationMs  wall-clock time in milliseconds taken to generate the key pair;
+     *                    the primary metric observed during load tests
+     */
     public record KeyResult(String shortSha, long durationMs) {}
 
+    /**
+     * Generates an RSA key pair of the requested size and returns a short fingerprint
+     * together with the generation duration.
+     *
+     * @param size the RSA key size in bits; must be one of 512, 1024, 2048, or 4096
+     * @return a {@link KeyResult} containing the public-key fingerprint and generation time
+     * @throws IllegalArgumentException if {@code size} is not an allowed value
+     * @throws IllegalStateException    if the RSA algorithm is unexpectedly unavailable in this JVM
+     */
     public KeyResult generate(int size) {
         if (!validator.isValid(size)) {
             log.warn("[KEY] rejected invalid size={}", size);

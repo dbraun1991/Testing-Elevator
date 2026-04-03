@@ -1,6 +1,5 @@
 package com.keyservice.validator;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -8,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Code#1
  */
-@Disabled()
 class KeySizeValidator1WeakTest {
 
     private final KeySizeValidator validator = new KeySizeValidator();
